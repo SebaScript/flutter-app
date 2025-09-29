@@ -1,21 +1,18 @@
-# flutter_app
+# Posts! app
 
-# JSONPlaceholder API
+# API JSONPlaceholder
 
-This Flutter application utilizes the JSONPlaceholder API (https://jsonplaceholder.typicode.com/), a free fake REST API for testing and prototyping. JSONPlaceholder provides realistic sample data and supports all HTTP methods (GET, POST, PUT, PATCH, DELETE) making it perfect for developing and testing CRUD applications.
+Esta aplicación Flutter utiliza la API de JSONPlaceholder (https://jsonplaceholder.typicode.com/), una API REST de pruebas gratuita. JSONPlaceholder proporciona datos de ejemplo y soporta todos los métodos HTTP (GET, POST, PUT, PATCH, DELETE).
 
-## About JSONPlaceholder
+La API proporciona varios recursos, por ejemplo: posts, comments, albums, photos, todos y users.  
+Esta aplicación se centra específicamente en el recurso **posts**, que contiene:
+- **id**: Identificador único para cada publicación  
+- **userId**: ID del usuario que creó la publicación  
+- **title**: Título de la publicación  
+- **body**: Contenido de la publicación  
 
-JSONPlaceholder serves as a fake online REST API for developers who need:
-- Quick backend for prototyping and testing
-- Fake data in JSON format
-- Zero-config setup with realistic data
-- Support for all RESTful operations
+Todas las respuestas de la API simulan un CRUD completo pero todos los datos de la API son estáticos y no tiene persistencia de datos.
 
-The API provides several resources including posts, comments, albums, photos, todos, and users. This application specifically focuses on the **posts** resource, which contains:
-- **id**: Unique identifier for each post
-- **userId**: ID of the user who created the post
-- **title**: Post title
-- **body**: Post content
+# Link al video del demo de la app
 
-All API responses simulate real server behavior, including proper HTTP status codes and response times, making it an excellent choice for learning REST API integration in mobile applications.
+https://youtu.be/N5QKOp_SY_E

@@ -29,8 +29,10 @@ class MyApp extends StatelessWidget {
           appBarTheme: const AppBarTheme(
             centerTitle: true,
             elevation: 0,
-            backgroundColor: Color(0xFF1A1A1A),
+            scrolledUnderElevation: 0,
+            backgroundColor: Color(0xFF121212),
             foregroundColor: Colors.white,
+            surfaceTintColor: Colors.transparent,
           ),
           cardTheme: CardThemeData(
             elevation: 8,

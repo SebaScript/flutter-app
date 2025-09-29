@@ -46,31 +46,12 @@ class _PostFormScreenState extends State<PostFormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Para permitir blur del AppBar sobre el contenido
-      extendBodyBehindAppBar: true,
-
       appBar: AppBar(
         title: Text(
           _isEditing ? 'Edit Post' : 'Create Post',
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white),
         ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
         centerTitle: true,
-        foregroundColor: Colors.white,
-        flexibleSpace: ClipRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFF121212).withOpacity(0.10),
-                border: Border(
-                  bottom: BorderSide(color: Colors.white.withOpacity(0.12), width: 0.5),
-                ),
-              ),
-            ),
-          ),
-        ),
         actions: [
           TextButton(
             onPressed: _isLoading ? null : _savePost,
@@ -86,7 +67,7 @@ class _PostFormScreenState extends State<PostFormScreen> {
       ),
 
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, kToolbarHeight + 16, 16, 16),
+        padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
           child: Column(

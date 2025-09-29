@@ -16,11 +16,6 @@ class PostListScreen extends StatefulWidget {
 class _PostListScreenState extends State<PostListScreen> {
   final TextEditingController _searchController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-
-  static const double _searchBarHeight = 44.0;
-  static const double _padTop = 8.0;
-  static const double _padBottom = 12.0;
-
   @override
   void initState() {
     super.initState();
@@ -50,68 +45,36 @@ class _PostListScreenState extends State<PostListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-
       appBar: AppBar(
-        // ocultamos la barra superior para que todo vaya en el bottom
-        toolbarHeight: 0,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
         centerTitle: false,
-        foregroundColor: Colors.white,
-
-        // BLUR del AppBar (sin withOpacity)
-        flexibleSpace: ClipRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(
-              decoration: const BoxDecoration(
-                // 0x1A = ~10% de alpha
-                color: Color(0x1A121212),
-                // 0x1F = ~12% de alpha
-                border: Border(bottom: BorderSide(color: Color(0x1FFFFFFF), width: 0.5)),
+        titleSpacing: 16,
+        toolbarHeight: 56,
+        title: Consumer<PostProvider>(
+          builder: (_, provider, __) => Row(
+            children: [
+              const Text('Posts!'),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _SearchField(
+                  controller: _searchController,
+                  value: provider.searchQuery,
+                  onChanged: provider.setSearchQuery,
+                  onClear: () {
+                    _searchController.clear();
+                    provider.clearSearch();
+                  },
+                ),
               ),
-            ),
-          ),
-        ),
-
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(_searchBarHeight + _padTop + _padBottom),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, _padTop, 16, _padBottom),
-            child: Consumer<PostProvider>(
-              builder: (_, provider, __) => Row(
-                children: [
-                  const Text(
-                    'Posts!',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: _SearchField(
-                      controller: _searchController,
-                      value: provider.searchQuery,
-                      onChanged: provider.setSearchQuery,
-                      onClear: () {
-                        _searchController.clear();
-                        provider.clearSearch();
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            ],
           ),
         ),
       ),
 
-      
       body: Consumer<PostProvider>(
         builder: (context, provider, _) {
           return CustomScrollView(
             controller: _scrollController,
             slivers: [
-              SliverToBoxAdapter(child: SizedBox(height: kToolbarHeight)),
               SliverToBoxAdapter(
                 child: _buildPostList(provider),
               ),
@@ -378,7 +341,7 @@ class _SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 44,
+      height: 36,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: const Color(0x1AFFFFFF),
@@ -399,7 +362,7 @@ class _SearchField extends StatelessWidget {
                 )
               : null,
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         ),
       ),
     );

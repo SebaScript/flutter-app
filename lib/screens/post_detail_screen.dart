@@ -25,31 +25,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-
       appBar: AppBar(
-        title: const Text(
-          'Post Details',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        title: const Text('Post Details'),
         centerTitle: true,
-        foregroundColor: Colors.white,
-        flexibleSpace: ClipRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFF121212).withOpacity(0.10),
-                border: Border(
-                  bottom: BorderSide(color: Colors.white.withOpacity(0.12), width: 0.5),
-                ),
-              ),
-            ),
-          ),
-        ),
-
         actions: [
           Consumer<PostProvider>(
             builder: (_, provider, __) {
@@ -147,7 +125,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     final user = provider.getUserById(post.userId);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, kToolbarHeight + 16, 16, 16),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

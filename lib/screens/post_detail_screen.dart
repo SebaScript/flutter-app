@@ -101,8 +101,6 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     );
   }
 
-  // ---------- UI SECTIONS ----------
-
   Widget _buildPostDetail(Post post, PostProvider provider) {
     final user = provider.getUserById(post.userId);
 
@@ -188,9 +186,6 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
       ),
     );
   }
-
-
-  // ---------- NAV / DIALOG ----------
 
   void _navigateToEdit(BuildContext context, Post post) {
     Navigator.push(context, MaterialPageRoute(builder: (_) => PostFormScreen(post: post)));

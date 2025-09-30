@@ -182,11 +182,23 @@ class _PostListScreenState extends State<PostListScreen> {
                     itemBuilder: (_) => const [
                       PopupMenuItem(
                         value: 'edit',
-                        child: Text('Edit'),
+                        child: Row(
+                          children: [
+                            Icon(Icons.edit, size: 18), 
+                            SizedBox(width: 8), 
+                            Text('Edit')
+                          ]
+                        ),
                       ),
                       PopupMenuItem(
                         value: 'delete',
-                        child: Text('Delete'),
+                        child: Row(
+                          children: [
+                            Icon(Icons.delete, size: 18, color: Colors.red),
+                            SizedBox(width: 8),
+                            Text('Delete', style: TextStyle(color: Colors.red))
+                          ]
+                        ),
                       ),
                     ],
                   ),

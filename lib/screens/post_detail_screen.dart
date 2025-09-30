@@ -120,7 +120,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                   Row(
                     children: [
                       CircleAvatar(
-                        backgroundColor: Colors.blue,
+                        backgroundColor: Color.fromARGB(100, 80, 50, 140),
                         child: Text(
                           (user?.name.isNotEmpty ?? false) ? user!.name[0].toUpperCase() : 'U',
                           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),

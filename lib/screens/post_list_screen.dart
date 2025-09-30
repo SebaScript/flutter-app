@@ -14,21 +14,32 @@ class PostListScreen extends StatefulWidget {
 
 class _PostListScreenState extends State<PostListScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_onScroll);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = context.read<PostProvider>();
-      provider.loadPosts();
+      provider.loadPosts(refresh: true);
       provider.loadUsers();
     });
   }
 
   @override
   void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
     _searchController.dispose();
     super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      context.read<PostProvider>().loadMorePosts();
+    }
   }
 
   @override
@@ -43,7 +54,7 @@ class _PostListScreenState extends State<PostListScreen> {
               const SizedBox(width: 16),
               Expanded(
                 child: Consumer<PostProvider>(
-                  builder: (context, provider, _) => TextField(
+                  builder: (context, provider, child) => TextField(
                     controller: _searchController,
                     onChanged: provider.setSearchQuery,
                     decoration: InputDecoration(
@@ -87,7 +98,7 @@ class _PostListScreenState extends State<PostListScreen> {
                   Text(provider.errorMessage),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () => provider.loadPosts(),
+                    onPressed: () => provider.loadPosts(refresh: true),
                     child: const Text('Retry'),
                   ),
                 ],
@@ -100,9 +111,18 @@ class _PostListScreenState extends State<PostListScreen> {
           }
 
           return ListView.builder(
+            controller: _scrollController,
             padding: const EdgeInsets.all(16),
-            itemCount: provider.posts.length,
+            itemCount: provider.posts.length + (provider.hasMorePosts ? 1 : 0),
             itemBuilder: (context, index) {
+              if (index == provider.posts.length) {
+                return const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
               return _buildPostCard(provider.posts[index], provider);
             },
           );
@@ -132,7 +152,7 @@ class _PostListScreenState extends State<PostListScreen> {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Color.fromARGB(100, 80, 50, 140),
                     child: Text(
                       (user?.name.isNotEmpty ?? false) ? user!.name[0].toUpperCase() : 'U',
                       style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),

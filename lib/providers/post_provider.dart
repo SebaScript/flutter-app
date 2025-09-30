@@ -11,6 +11,9 @@ class PostProvider with ChangeNotifier {
   bool _isLoading = false;
   String _errorMessage = '';
   String _searchQuery = '';
+  int _currentPage = 1;
+  final int _postsPerPage = 10;
+  bool _hasMorePosts = true;
 
   List<Post> get posts => _searchQuery.isEmpty
       ? _posts
@@ -23,16 +26,38 @@ class PostProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
   String get searchQuery => _searchQuery;
+  int get currentPage => _currentPage;
+  bool get hasMorePosts => _hasMorePosts;
 
-  Future<void> loadPosts() async {
+  Future<void> loadPosts({bool refresh = false}) async {
     if (_isLoading) return;
 
-    _isLoading = true;
-    _errorMessage = '';
-    notifyListeners();
-
     try {
-      _posts = await _apiService.getPosts();
+      if (refresh) {
+        _currentPage = 1;
+        _posts.clear();
+        _hasMorePosts = true;
+      }
+
+      _isLoading = true;
+      _errorMessage = '';
+      notifyListeners();
+
+      final newPosts = await _apiService.getPosts(
+        limit: _postsPerPage,
+        page: _currentPage,
+      );
+
+      if (refresh) {
+        _posts = newPosts;
+      } else {
+        _posts.addAll(newPosts);
+      }
+
+      if (newPosts.length < _postsPerPage) {
+        _hasMorePosts = false;
+      }
+
       _isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -40,6 +65,13 @@ class PostProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> loadMorePosts() async {
+    if (!_hasMorePosts || _isLoading) return;
+
+    _currentPage++;
+    await loadPosts();
   }
 
   Future<void> loadUsers() async {

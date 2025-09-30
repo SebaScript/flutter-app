@@ -19,7 +19,10 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.dark(
           useMaterial3: true,
         ).copyWith(
-          primaryColor: Colors.blue,
+          floatingActionButtonTheme: const FloatingActionButtonThemeData(
+            backgroundColor: Color.fromARGB(255, 80, 50, 140),
+          ),
+
           scaffoldBackgroundColor: const Color(0xFF121212),
           cardColor: const Color(0xFF1E1E1E),
           appBarTheme: const AppBarTheme(
